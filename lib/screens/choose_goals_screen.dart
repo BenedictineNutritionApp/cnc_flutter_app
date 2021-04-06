@@ -113,11 +113,12 @@ class _ChooseGoalsPageState extends State<ChooseGoalsPage> {
                           onPrimary: Colors.white, // foreground
                         ),
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ChooseFruitGoals()),
-                          );
+                          Navigator.of(context)
+                              .push(
+                              new MaterialPageRoute(
+                                builder: (_) =>
+                                    ChooseFruitGoals(),
+                              )).then((value) => update(context));
                         },
                       ),
                     ]),
@@ -143,11 +144,12 @@ class _ChooseGoalsPageState extends State<ChooseGoalsPage> {
                           onPrimary: Colors.white, // foreground
                         ),
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ChooseVegetableGoals()),
-                          );
+                          Navigator.of(context)
+                              .push(
+                              new MaterialPageRoute(
+                                builder: (_) =>
+                                    ChooseVegetableGoals(),
+                              )).then((value) => update(context));
                         },
                       ),
                     ]),
@@ -173,11 +175,12 @@ class _ChooseGoalsPageState extends State<ChooseGoalsPage> {
                           onPrimary: Colors.white, // foreground
                         ),
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ChooseGrainGoals()),
-                          );
+                          Navigator.of(context)
+                              .push(
+                              new MaterialPageRoute(
+                                builder: (_) =>
+                                    ChooseGrainGoals(),
+                              )).then((value) => update(context));
                         },
                       ),
                     ]),
@@ -203,11 +206,12 @@ class _ChooseGoalsPageState extends State<ChooseGoalsPage> {
                           onPrimary: Colors.white, // foreground
                         ),
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ChooseProteinGoals()),
-                          );
+                          Navigator.of(context)
+                              .push(
+                              new MaterialPageRoute(
+                                builder: (_) =>
+                                    ChooseProteinGoals(),
+                              )).then((value) => update(context));
                         },
                       ),
                     ]),
@@ -233,11 +237,12 @@ class _ChooseGoalsPageState extends State<ChooseGoalsPage> {
                           onPrimary: Colors.white, // foreground
                         ),
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ChooseDairyGoals()),
-                          );
+                          Navigator.of(context)
+                              .push(
+                              new MaterialPageRoute(
+                                builder: (_) =>
+                                    ChooseDairyGoals(),
+                              )).then((value) => update(context));
                         },
                       ),
                     ]),
@@ -263,11 +268,12 @@ class _ChooseGoalsPageState extends State<ChooseGoalsPage> {
                           onPrimary: Colors.white, // foreground
                         ),
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ChooseSnackGoals()),
-                          );
+                          Navigator.of(context)
+                              .push(
+                              new MaterialPageRoute(
+                                builder: (_) =>
+                                    ChooseSnackGoals(),
+                              )).then((value) => update(context));
                         },
                       ),
                     ]),
@@ -293,11 +299,12 @@ class _ChooseGoalsPageState extends State<ChooseGoalsPage> {
                           onPrimary: Colors.white, // foreground
                         ),
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ChooseBeverageGoals()),
-                          );
+                          Navigator.of(context)
+                              .push(
+                              new MaterialPageRoute(
+                                builder: (_) =>
+                                    ChooseBeverageGoals(),
+                              )).then((value) => update(context));
                         },
                       ),
                     ]),
@@ -323,11 +330,12 @@ class _ChooseGoalsPageState extends State<ChooseGoalsPage> {
                           onPrimary: Colors.white, // foreground
                         ),
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ChooseActivityGoals()),
-                          );
+                          Navigator.of(context)
+                              .push(
+                            new MaterialPageRoute(
+                                builder: (_) =>
+                                    ChooseActivityGoals(),
+                          )).then((value) => update(context));
                         },
                       ),
                     ]),
@@ -335,6 +343,10 @@ class _ChooseGoalsPageState extends State<ChooseGoalsPage> {
               ],
             ),
           );
+  }
+
+  update(context) {
+    setState(() {});
   }
 
   void _showSnackBar(BuildContext context, String text) {

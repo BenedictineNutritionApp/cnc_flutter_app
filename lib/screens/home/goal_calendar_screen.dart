@@ -53,6 +53,15 @@ class _CalendarPageState extends State<CalendarPage> {
   var db = new WeeklyDBHelper();
   final db2 = WeeklySavedDBHelper();
 
+  initPrefs() async {
+    prefs = await SharedPreferences.getInstance();
+
+    totalWeeklyGoalsCompleted = prefs.getInt("weekly goal total");
+    totalPersonalGoalsCompleted = prefs.getInt("personal goal total");
+    _events = Map<DateTime, List<dynamic>>.from(decodeMap(json.decode(prefs.getString("events") ?? "{}")));
+
+  }
+
   @override
   void initState() {
     super.initState();
@@ -65,6 +74,7 @@ class _CalendarPageState extends State<CalendarPage> {
     _eventController2 = TextEditingController();
     _events2 = {};
     _selectedEvents2 = [];
+    initPrefs();
   }
 
   Map<String, dynamic> encodeMap(Map<DateTime, dynamic> map) {
@@ -124,6 +134,7 @@ class _CalendarPageState extends State<CalendarPage> {
               formatButtonShowsNext: false,
             ),
             onDaySelected: (date, events, holidays) {
+              update(context);
               setState(() {
                 _selectedEvents = events;
               });
@@ -179,11 +190,12 @@ class _CalendarPageState extends State<CalendarPage> {
                               onPrimary: Colors.white, // foreground
                             ),
                             onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => ChooseWeeklyGoals()),
-                              );
+                              Navigator.of(context)
+                                  .push(
+                                  new MaterialPageRoute(
+                                    builder: (_) =>
+                                        ChooseWeeklyGoals(),
+                                  )).then((value) => update(context));
                             },
                           ),
                           ElevatedButton(
@@ -194,11 +206,12 @@ class _CalendarPageState extends State<CalendarPage> {
                               onPrimary: Colors.white, // foreground
                             ),
                             onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => WeeklyGoals()),
-                              );
+                              Navigator.of(context)
+                                  .push(
+                                  new MaterialPageRoute(
+                                    builder: (_) =>
+                                        WeeklyGoals(),
+                                  )).then((value) => update(context));
                             },
                           ),
                         ]),
@@ -303,6 +316,10 @@ class _CalendarPageState extends State<CalendarPage> {
     );
   }
 
+  update(context) {
+    setState(() {});
+  }
+
   Widget _buildListView() {
     return ListView.builder(
         shrinkWrap: true,
@@ -331,15 +348,17 @@ class _CalendarPageState extends State<CalendarPage> {
                     prefs.setInt("goal total", totalPersonalGoalsCompleted);
                   }
 
-                  _events[_controller.selectedDay].removeAt(index);
                   prefs.setInt(
                       "personal goal total", totalPersonalGoalsCompleted);
+
+                  _events[_controller.selectedDay].removeAt(index);
+                  prefs.setString("events", json.encode(encodeMap(_events)));
                   _eventController.clear();
                   setState(() {
                     if (_events[_controller.selectedDay] != null) {
                       _selectedEvents = _events[_controller.selectedDay];
                     }
-                    _showSnackBar(context, 'Deleted Goal');
+                    _showSnackBar(context, 'Completed Goal');
                   });
                 },
               ),
@@ -419,8 +438,8 @@ class _CalendarPageState extends State<CalendarPage> {
                     prefs.setInt(
                         "weekly goal total", totalWeeklyGoalsCompleted);
                     _eventController2.clear();
+                    update(context);
                     _showSnackBar(context, 'Completed Goal');
-
                   }),
               IconSlideAction(
                   caption: 'Copy',
@@ -451,8 +470,10 @@ class _CalendarPageState extends State<CalendarPage> {
                   color: Colors.red,
                   icon: Icons.delete,
                   onTap: () {
+                    update(context);
                     deleteByGoalDescription(weeklySavedGoalsModelList[index]
                         .id);
+                    _showSnackBar(context, 'Deleted Goal');
                   }),
             ],
           );
@@ -529,17 +550,7 @@ class _CalendarPageState extends State<CalendarPage> {
         weeklySavedGoalsModelList.add(weeklySavedGoalsModel);
     }
     print(weeklySavedGoalsModelList.length);
-    initPrefs();
-  }
 
-  initPrefs() async {
-    prefs = await SharedPreferences.getInstance();
-    setState(() {
-      totalWeeklyGoalsCompleted = prefs.getInt("weekly goal total");
-      totalPersonalGoalsCompleted = prefs.getInt("personal goal total");
-      _events = Map<DateTime, List<dynamic>>.from(
-          decodeMap(json.decode(prefs.getString("events") ?? "{}")));
-    });
   }
 
   deleteByGoalDescription(int d) {
